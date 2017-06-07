@@ -41,6 +41,7 @@
 .def length = r22
 .def head_row = r23
 .def head_col = r24
+.def crashed = r25
 
 .equ lcd_content = 0x60
 .equ snake_position = 0x100
@@ -81,10 +82,10 @@ rcall init_timer
 rcall init_led
 rcall init_status
 
-ldi length, 0x02
+ldi length, 0x07
 ldi arah, 0x40
 ldi head_row, 0x01
-ldi head_col, 0x01
+ldi head_col, 0x06
 ldi YH, high(lcd_content)
 ldi YL, low(lcd_content)
 ldi ZH, high(initial_state*2)
@@ -127,7 +128,7 @@ forever:
 	skip_time_up:
 	cpi status, 4
 	brne skip_you_lose
-	;rcall you_lose
+	rcall you_lose
 	rjmp landing
 	skip_you_lose:
 	in button, PIND
@@ -245,6 +246,7 @@ ld temp, Y
 out PORTC, temp
 sbi PORTA,0 ; SETB EN
 cbi PORTA,0 ; CLR EN
+cbi PORTA,1
 ret
 
 write_string:
@@ -255,6 +257,7 @@ sbi PORTA, 3
 out PORTE, r0
 sbi PORTA, 2
 cbi PORTA, 2
+cbi PORTA, 3
 adiw Z, 1
 rjmp write_string
 end_write_string:
@@ -404,6 +407,23 @@ rcall write_string
 rcall delay
 ret
 
+you_lose:
+ldi status, 0
+ldi temp, 0
+out TCCR1B, temp
+sei
+rcall clear_lcd_3
+cbi PORTA, 3 ; CLR RS
+ldi temp, 0b11000100
+out PORTE, temp
+sbi PORTA, 2 ; SETB EN
+cbi PORTA, 2 ; CLR EN
+ldi ZL, low(message_you_lose*2)
+ldi ZH, high(message_you_lose*2)
+rcall write_string
+rcall delay
+ret
+
 init_status:
 rcall clear_lcd_3
 cbi PORTA, 3 ; CLR RS
@@ -533,10 +553,27 @@ update_position:
 	subi temp, 1
 	skip_kiri:
 
+	rcall check_if_crash
 	rcall set_black_block
 	ldi ZH, high(snake_position)
 	ldi ZL, low(snake_position)
 	st Z, temp ; posisi kepala sekarang
+ret
+
+check_if_crash:
+push temp
+	mov ZL, temp
+	ldi ZH, 0x00
+	ld temp, Z
+	cpi temp, 0xFF
+	brne skip_set_crash
+		ldi crashed, 1
+	skip_set_crash:
+	cpi temp, 0x5F
+	brne end_check_if_crash
+		ldi crashed, 2
+end_check_if_crash:
+pop temp
 ret
 
 update_body:
@@ -622,6 +659,19 @@ update_status:
 	brne skip_set_status_time_up
 		ldi status, 3
 	skip_set_status_time_up:
+	
+	cpi crashed, 1
+	brne skip_decrease_lives
+	in temp, PORTA
+	lsl temp
+	out PORTA, temp
+	skip_decrease_lives:
+	ldi crashed, 0	
+	cpi temp, 0
+	brne skip_set_game_over
+	ldi status, 4
+	skip_set_game_over:
+
 end_update_status:
 ret
 
@@ -666,7 +716,7 @@ ret
 
 ; ================================================================================================= ;
 
-message_lose:
+message_you_lose:
 .db "YOU LOSE", 0
 message_time_up:
 .db "TIME UP", 0
@@ -696,7 +746,7 @@ initial_state:
 .db 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10
 .db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 .db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-.db 0x60, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+.db 0x65, 0x64, 0x63, 0x62, 0x61, 0x60, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 .db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 .db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 .db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
