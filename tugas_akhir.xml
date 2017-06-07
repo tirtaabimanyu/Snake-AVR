@@ -3,10 +3,10 @@
    <General>
       <Build>2005</Build>
       <Position>
-         <top>420</top>
-         <bottom>955</bottom>
-         <left>1040</left>
-         <right>1628</right>
+         <top>142</top>
+         <bottom>575</bottom>
+         <left>690</left>
+         <right>1229</right>
       </Position>
       <StayOnTop>1</StayOnTop>
       <Target>ATmega8515</Target>
@@ -15,12 +15,12 @@
       <LCD>
          <Name>LCD1</Name>
          <Position>
-            <top>13</top>
-            <left>18</left>
+            <top>126</top>
+            <left>12</left>
          </Position>
          <DisplayConfig>
             <columns>16</columns>
-            <rows>2</rows>
+            <rows>4</rows>
             <bkColor>0xc1fa9d</bkColor>
             <size>2</size>
          </DisplayConfig>
@@ -48,12 +48,12 @@
       <LCD>
          <Name>LCD2</Name>
          <Position>
-            <top>65</top>
-            <left>18</left>
+            <top>205</top>
+            <left>12</left>
          </Position>
          <DisplayConfig>
             <columns>16</columns>
-            <rows>2</rows>
+            <rows>4</rows>
             <bkColor>0xc1fa9d</bkColor>
             <size>2</size>
          </DisplayConfig>
@@ -81,12 +81,12 @@
       <LCD>
          <Name>LCD3</Name>
          <Position>
-            <top>117</top>
-            <left>18</left>
+            <top>14</top>
+            <left>12</left>
          </Position>
          <DisplayConfig>
             <columns>16</columns>
-            <rows>2</rows>
+            <rows>4</rows>
             <bkColor>0xc1fa9d</bkColor>
             <size>2</size>
          </DisplayConfig>
@@ -98,7 +98,7 @@
             </DataPort>
             <EnablePin>
                <Port>PORTA</Port>
-               <Bit>0</Bit>
+               <Bit>2</Bit>
             </EnablePin>
             <RW_Pin>
                <WriteOnly>1</WriteOnly>
@@ -107,15 +107,15 @@
             </RW_Pin>
             <RS_Pin>
                <Port>PORTA</Port>
-               <Bit>1</Bit>
+               <Bit>3</Bit>
             </RS_Pin>
          </PortMapping>
       </LCD>
       <Buttons>
          <Name>Buttons1</Name>
          <Position>
-            <top>192</top>
-            <left>45</left>
+            <top>136</top>
+            <left>220</left>
          </Position>
          <Config index="0">
             <Name>Atas</Name>
@@ -155,14 +155,14 @@
       <Buttons>
          <Name>Buttons2</Name>
          <Position>
-            <top>112</top>
-            <left>232</left>
+            <top>136</top>
+            <left>364</left>
          </Position>
          <Config index="0">
             <Name>Start</Name>
             <PortPin>
                <Port>PORTD</Port>
-               <Bit>0</Bit>
+               <Bit>2</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -170,7 +170,7 @@
             <Name>Pause</Name>
             <PortPin>
                <Port>PORTD</Port>
-               <Bit>1</Bit>
+               <Bit>3</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -178,7 +178,7 @@
             <Name></Name>
             <PortPin>
                <Port>PORTE</Port>
-               <Bit>2</Bit>
+               <Bit>0</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -186,7 +186,7 @@
             <Name></Name>
             <PortPin>
                <Port>PORTE</Port>
-               <Bit>3</Bit>
+               <Bit>1</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -196,8 +196,8 @@
       <LEDs>
          <Name>LEDs1</Name>
          <Position>
-            <top>14</top>
-            <left>232</left>
+            <top>38</top>
+            <left>220</left>
          </Position>
          <Config index="0">
             <Color>Red</Color>
@@ -231,7 +231,7 @@
             <Name></Name>
             <PortPin>
                <Port>PORTA</Port>
-               <Bit>3</Bit>
+               <Bit>4</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -249,7 +249,7 @@
             <Name></Name>
             <PortPin>
                <Port>PORTA</Port>
-               <Bit>5</Bit>
+               <Bit>4</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -258,7 +258,7 @@
             <Name></Name>
             <PortPin>
                <Port>PORTA</Port>
-               <Bit>6</Bit>
+               <Bit>4</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -267,7 +267,7 @@
             <Name></Name>
             <PortPin>
                <Port>PORTA</Port>
-               <Bit>7</Bit>
+               <Bit>4</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
